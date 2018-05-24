@@ -78,10 +78,10 @@ LaserMapping::LaserMapping(const float& scanPeriod,
         _laserCloudSurfFromMap(new pcl::PointCloud<pcl::PointXYZI>())
 {
   // initialize mapping odometry and odometry tf messages
-  _odomAftMapped.header.frame_id = "/camera_init";
+  _odomAftMapped.header.frame_id = "/world";
   _odomAftMapped.child_frame_id = "/aft_mapped";
 
-  _aftMappedTrans.frame_id_ = "/camera_init";
+  _aftMappedTrans.frame_id_ = "/world";
   _aftMappedTrans.child_frame_id_ = "/aft_mapped";
 
   // initialize frame counter
@@ -190,7 +190,9 @@ bool LaserMapping::setup(ros::NodeHandle& node,
   // advertise laser mapping topics
   _pubLaserCloudSurround = node.advertise<sensor_msgs::PointCloud2> ("/laser_cloud_surround", 1);
   _pubLaserCloudFullRes = node.advertise<sensor_msgs::PointCloud2> ("/velodyne_cloud_registered", 2);
+  _pubLaserForSegmach=node.advertise<sensor_msgs::PointCloud2> ("/velodyne_cloud_segmatch", 2);
   _pubOdomAftMapped = node.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 5);
+
 
 
   // subscribe to laser odometry topics
@@ -1061,7 +1063,7 @@ void LaserMapping::publishResult()
     _downSizeFilterCorner.filter(*_laserCloudSurroundDS);
 
     // publish new map cloud
-    publishCloudMsg(_pubLaserCloudSurround, *_laserCloudSurroundDS, _timeLaserOdometry, "/camera_init");
+    publishCloudMsg(_pubLaserCloudSurround, *_laserCloudSurroundDS, _timeLaserOdometry, "/world");
   }
 
 
@@ -1072,10 +1074,15 @@ void LaserMapping::publishResult()
   }
 
   // publish transformed full resolution input cloud
-  publishCloudMsg(_pubLaserCloudFullRes, *_laserCloudFullRes, _timeLaserOdometry, "/camera_init");
+  publishCloudMsg(_pubLaserCloudFullRes, *_laserCloudFullRes, _timeLaserOdometry, "/world");
 
 
-  // publish odometry after mapped transformations
+  //ugyan annak a pontfelhőnek elküldése, csak most a velodyne frame alatt, hoyg tf adatokkal összekapcsolható lehessen
+  publishCloudMsg(_pubLaserForSegmach, *_laserCloudFullRes, _timeLaserOdometry, "velodyne");
+
+
+
+    // publish odometry after mapped transformations
   geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
       ( _transformAftMapped.rot_z.rad(),
         -_transformAftMapped.rot_x.rad(),

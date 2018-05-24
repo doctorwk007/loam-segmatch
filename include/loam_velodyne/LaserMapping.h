@@ -229,6 +229,7 @@ private:
 
   ros::Publisher _pubLaserCloudSurround;    ///< map cloud message publisher
   ros::Publisher _pubLaserCloudFullRes;     ///< current full resolution cloud message publisher
+  ros::Publisher _pubLaserForSegmach;
   ros::Publisher _pubOdomAftMapped;         ///< mapping odometry publisher
   tf::TransformBroadcaster _tfBroadcaster;  ///< mapping odometry transform broadcaster
 

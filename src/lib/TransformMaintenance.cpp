@@ -44,10 +44,10 @@ using std::atan2;
 TransformMaintenance::TransformMaintenance()
 {
   // initialize odometry and odometry tf messages
-  _laserOdometry2.header.frame_id = "/camera_init";
+  _laserOdometry2.header.frame_id = "/world";
   _laserOdometry2.child_frame_id = "/camera";
 
-  _laserOdometryTrans2.frame_id_ = "/camera_init";
+  _laserOdometryTrans2.frame_id_ = "/world";
   _laserOdometryTrans2.child_frame_id_ = "/camera";
 
 

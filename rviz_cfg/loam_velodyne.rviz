@@ -161,7 +161,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: camera_init
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -181,7 +181,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Class: rviz/ThirdPersonFollower
+      Class: rviz/Orbit
       Distance: 162.362
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06

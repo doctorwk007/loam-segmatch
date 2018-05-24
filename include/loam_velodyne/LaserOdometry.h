@@ -197,6 +197,8 @@ private:
   Vector3 _imuVeloFromStart;
 
   nav_msgs::Odometry _laserOdometryMsg;       ///< laser odometry message
+
+  tf::StampedTransform _laserOdometryImuTrans;   ///plusz egy lépcső beépítése a segmatch miatt
   tf::StampedTransform _laserOdometryTrans;   ///< laser odometry transformation
 
   ros::Publisher _pubLaserCloudCornerLast;  ///< last corner cloud message publisher

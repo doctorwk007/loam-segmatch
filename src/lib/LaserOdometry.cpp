@@ -71,11 +71,16 @@ LaserOdometry::LaserOdometry(const float& scanPeriod,
         _coeffSel(new pcl::PointCloud<pcl::PointXYZI>())
 {
   // initialize odometry and odometry tf messages
-  _laserOdometryMsg.header.frame_id = "/camera_init";
-  _laserOdometryMsg.child_frame_id = "/laser_odom";
+  _laserOdometryMsg.header.frame_id = "world";
+  _laserOdometryMsg.child_frame_id = "imu";
 
-  _laserOdometryTrans.frame_id_ = "/camera_init";
-  _laserOdometryTrans.child_frame_id_ = "/laser_odom";
+  _laserOdometryTrans.frame_id_ = "world";
+  _laserOdometryTrans.child_frame_id_ = "imu";
+
+
+  //plusz egy lépcső segmatch miatt
+  _laserOdometryImuTrans.frame_id_=  "imu";
+  _laserOdometryImuTrans.child_frame_id_="velodyne";
 }
 
 
@@ -898,11 +903,17 @@ void LaserOdometry::publishResult()
   _laserOdometryMsg.pose.pose.position.z = _transformSum.pos.z();
   _pubLaserOdometry.publish(_laserOdometryMsg);
 
+
   _laserOdometryTrans.stamp_ = _timeSurfPointsLessFlat;
   _laserOdometryTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
   _laserOdometryTrans.setOrigin(tf::Vector3( _transformSum.pos.x(), _transformSum.pos.y(), _transformSum.pos.z()) );
   _tfBroadcaster.sendTransform(_laserOdometryTrans);
 
+
+  _laserOdometryImuTrans.stamp_ = _timeSurfPointsLessFlat;
+  _laserOdometryImuTrans.setRotation(tf::Quaternion(0, 0, 0, 1));
+  _laserOdometryImuTrans.setOrigin(tf::Vector3( 0, 0, 0) );
+  _tfBroadcaster.sendTransform(_laserOdometryImuTrans);
 
   // publish cloud results according to the input output ratio
   if (_ioRatio < 2 || _frameCount % _ioRatio == 1) {
