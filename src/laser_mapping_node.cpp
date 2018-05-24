@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 #include "loam_velodyne/LaserMapping.h"
 
-
+//saját koment
 /** Main node entry point. */
 int main(int argc, char **argv)
 {
