@@ -183,6 +183,7 @@ private:
   pcl::PointCloud<pcl::PointXYZI>::Ptr _laserCloudCornerLast;   ///< last corner points cloud
   pcl::PointCloud<pcl::PointXYZI>::Ptr _laserCloudSurfLast;     ///< last surface points cloud
   pcl::PointCloud<pcl::PointXYZI>::Ptr _laserCloudFullRes;      ///< last full resolution cloud
+  pcl::PointCloud<pcl::PointXYZI>::Ptr _origLaserCloudFullRes;  //előző duplikálása, szükséges, hogy jó frame alatt legyen küldhető
 
   pcl::PointCloud<pcl::PointXYZI>::Ptr _laserCloudCornerStack;
   pcl::PointCloud<pcl::PointXYZI>::Ptr _laserCloudSurfStack;

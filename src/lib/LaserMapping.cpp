@@ -68,6 +68,8 @@ LaserMapping::LaserMapping(const float& scanPeriod,
         _laserCloudCornerLast(new pcl::PointCloud<pcl::PointXYZI>()),
         _laserCloudSurfLast(new pcl::PointCloud<pcl::PointXYZI>()),
         _laserCloudFullRes(new pcl::PointCloud<pcl::PointXYZI>()),
+        //és ennek egy duplikálása, hogy jó frame alatt is küldhető legyen
+        _origLaserCloudFullRes(new pcl::PointCloud<pcl::PointXYZI>()),
         _laserCloudCornerStack(new pcl::PointCloud<pcl::PointXYZI>()),
         _laserCloudSurfStack(new pcl::PointCloud<pcl::PointXYZI>()),
         _laserCloudCornerStackDS(new pcl::PointCloud<pcl::PointXYZI>()),
@@ -1068,17 +1070,22 @@ void LaserMapping::publishResult()
 
 
   // transform full resolution input cloud to map
+  *_origLaserCloudFullRes=*_laserCloudFullRes;
+
+
   size_t laserCloudFullResNum = _laserCloudFullRes->points.size();
   for (int i = 0; i < laserCloudFullResNum; i++) {
     pointAssociateToMap(_laserCloudFullRes->points[i], _laserCloudFullRes->points[i]);
   }
 
+
+
   // publish transformed full resolution input cloud
-  publishCloudMsg(_pubLaserCloudFullRes, *_laserCloudFullRes, _timeLaserOdometry, "/world");
+  publishCloudMsg(_pubLaserCloudFullRes, *_laserCloudFullRes, _timeLaserOdometry, "world");
 
 
   //ugyan annak a pontfelhőnek elküldése, csak most a velodyne frame alatt, hoyg tf adatokkal összekapcsolható lehessen
-  publishCloudMsg(_pubLaserForSegmach, *_laserCloudFullRes, _timeLaserOdometry, "velodyne");
+  publishCloudMsg(_pubLaserForSegmach, *_origLaserCloudFullRes, _timeLaserOdometry, "aft_mapped");
 
 
 
