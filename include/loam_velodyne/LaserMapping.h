@@ -226,7 +226,10 @@ private:
   pcl::VoxelGrid<pcl::PointXYZI> _downSizeFilterMap;      ///< voxel filter for down sizing accumulated map
 
   nav_msgs::Odometry _odomAftMapped;      ///< mapping odometry message
-  tf::StampedTransform _aftMappedTrans;   ///< mapping odometry transformation
+  nav_msgs::Odometry _odomAftMappedImu;      ///additional step
+
+    tf::StampedTransform _aftMappedTrans;   ///< mapping odometry transformation
+  tf::StampedTransform _aftMappedImuTrans;   ///plusz egy lépcső beépítése a segmatch miatt
 
   ros::Publisher _pubLaserCloudSurround;    ///< map cloud message publisher
   ros::Publisher _pubLaserCloudFullRes;     ///< current full resolution cloud message publisher

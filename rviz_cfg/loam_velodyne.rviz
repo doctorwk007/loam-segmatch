@@ -195,7 +195,7 @@ Visualization Manager:
       Name: Current View
       Near Clip Distance: 0.01
       Pitch: -1.5698
-      Target Frame: aft_mapped
+      Target Frame: velodyne
       Value: ThirdPersonFollower (rviz)
       Yaw: 4.29039
     Saved: ~
