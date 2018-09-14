@@ -16,5 +16,7 @@ int main(int argc, char **argv)
     laserMapping.spin();
   }
 
+  //valami comment
+
   return 0;
 }
